@@ -18,7 +18,7 @@ A comprehensive Laravel package for managing alerts and notifications with suppo
 ## Installation
 
 ```bash
-composer require wahyudedik/laravel-alert
+composer require wahyudedik/laravel-alert 
 ```
 
 ## Configuration
