@@ -1,0 +1,40 @@
+{
+    "name": "laravel-alert-docs",
+    "version": "1.0.0",
+    "description": "Documentation for Laravel Alert library",
+    "main": "index.js",
+    "scripts": {
+        "dev": "mkdocs serve",
+        "build": "mkdocs build",
+        "deploy": "mkdocs gh-deploy",
+        "serve": "mkdocs serve --dev-addr=0.0.0.0:8000",
+        "clean": "rm -rf site/",
+        "lint": "markdownlint docs/*.md",
+        "spell": "cspell 'docs/**/*.md'",
+        "test": "echo 'No tests for documentation'",
+        "preview": "mkdocs serve --dev-addr=0.0.0.0:8000"
+    },
+    "keywords": [
+        "laravel",
+        "alert",
+        "notification",
+        "documentation",
+        "mkdocs"
+    ],
+    "author": "Wahyudedik",
+    "license": "MIT",
+    "devDependencies": {
+        "mkdocs": "^1.5.0",
+        "mkdocs-material": "^9.4.0",
+        "markdownlint": "^0.28.0",
+        "cspell": "^6.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/wahyudedik/LaravelAlert.git"
+    },
+    "bugs": {
+        "url": "https://github.com/wahyudedik/LaravelAlert/issues"
+    },
+    "homepage": "https://github.com/wahyudedik/LaravelAlert#readme"
+}

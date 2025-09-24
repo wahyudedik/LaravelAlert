@@ -1,0 +1,61 @@
+# Documentation build files
+_build/
+build/
+dist/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node modules (if using any build tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python cache (if using Sphinx or other Python tools)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jekyll files (if using Jekyll for documentation)
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# MkDocs files (if using MkDocs)
+site/
+
+# GitBook files (if using GitBook)
+_book/
+
+# Docusaurus files (if using Docusaurus)
+.docusaurus/
+
+# VitePress files (if using VitePress)
+.vitepress/cache/
+.vitepress/dist/
+
+# Other documentation tools
+.cache/
+.temp/
+.tmp/

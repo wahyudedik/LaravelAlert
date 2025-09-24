@@ -127,7 +127,12 @@ class AlertServiceProvider extends ServiceProvider
      */
     protected function registerMiddleware(): void
     {
-        $this->app['router']->aliasMiddleware('alert', AlertMiddleware::class);
+        $router = $this->app['router'];
+        $router->aliasMiddleware('alert', AlertMiddleware::class);
+        $router->aliasMiddleware('laravel-alert.api.auth', \Wahyudedik\LaravelAlert\Http\Middleware\ApiAuthentication::class);
+        $router->aliasMiddleware('laravel-alert.admin.auth', \Wahyudedik\LaravelAlert\Http\Middleware\AdminAuthentication::class);
+        $router->aliasMiddleware('laravel-alert.webhook.auth', \Wahyudedik\LaravelAlert\Http\Middleware\WebhookAuthentication::class);
+        $router->aliasMiddleware('laravel-alert.cors', \Wahyudedik\LaravelAlert\Http\Middleware\CorsMiddleware::class);
     }
 
     /**
@@ -182,6 +187,19 @@ class AlertServiceProvider extends ServiceProvider
                 Route::post('send', 'WebSocketAlertController@sendToConnection')->name('laravel-alert.ws.send');
             });
         });
+
+        // Register API routes
+        $this->registerApiRoutes();
+    }
+
+    /**
+     * Register API routes.
+     */
+    protected function registerApiRoutes(): void
+    {
+        if (file_exists(base_path('routes/api.php'))) {
+            $this->loadRoutesFrom(base_path('routes/api.php'));
+        }
     }
 
     /**

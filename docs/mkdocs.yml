@@ -1,0 +1,111 @@
+site_name: Laravel Alert Documentation
+site_description: Comprehensive documentation for the Laravel Alert library
+site_url: https://wahyudedik.github.io/LaravelAlert
+repo_url: https://github.com/wahyudedik/LaravelAlert
+repo_name: wahyudedik/LaravelAlert
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+
+nav:
+  - Home: README.md
+  - Getting Started:
+    - Installation: installation.md
+    - Quick Start: quick-start.md
+    - Configuration: configuration.md
+  - Core Features:
+    - Basic Usage: basic-usage.md
+    - Blade Integration: blade-integration.md
+    - Advanced Alert Types: advanced-alert-types.md
+  - Customization:
+    - Theming: theming.md
+    - Animations: animations.md
+    - JavaScript Integration: javascript-integration.md
+  - API & Integration:
+    - REST API: api.md
+    - Authentication: authentication.md
+    - Third-party Integrations: integrations.md
+  - Performance & Storage:
+    - Database Storage: database-storage.md
+    - Cache Integration: cache-integration.md
+    - Redis Support: redis-support.md
+    - Performance Optimization: performance.md
+  - Advanced Features:
+    - Real-time Alerts: real-time-alerts.md
+    - WebSocket Support: websocket.md
+    - Admin Panel: admin-panel.md
+  - Examples:
+    - Code Examples: examples.md
+    - Use Cases: use-cases.md
+    - Best Practices: best-practices.md
+  - Development:
+    - Contributing: contributing.md
+    - Testing: testing.md
+    - Changelog: changelog.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.superfences
+  - pymdownx.arithmatex
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+  - git-committers:
+      repository: wahyudedik/LaravelAlert
+      branch: main

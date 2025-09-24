@@ -1,0 +1,119 @@
+# Semantic Release Configuration
+# https://github.com/semantic-release/semantic-release
+
+branches:
+  - main
+  - name: 'beta'
+    prerelease: true
+  - name: 'alpha'
+    prerelease: true
+
+plugins:
+  - '@semantic-release/commit-analyzer'
+  - '@semantic-release/release-notes-generator'
+  - '@semantic-release/changelog'
+  - '@semantic-release/git'
+  - '@semantic-release/github'
+
+commitAnalyzer:
+  preset: conventionalcommits
+  releaseRules:
+    - type: 'feat'
+      release: 'minor'
+    - type: 'fix'
+      release: 'patch'
+    - type: 'perf'
+      release: 'patch'
+    - type: 'refactor'
+      release: 'patch'
+    - type: 'docs'
+      release: 'patch'
+    - type: 'style'
+      release: 'patch'
+    - type: 'test'
+      release: 'patch'
+    - type: 'build'
+      release: 'patch'
+    - type: 'ci'
+      release: 'patch'
+    - type: 'chore'
+      release: 'patch'
+    - type: 'revert'
+      release: 'patch'
+    - type: 'BREAKING CHANGE'
+      release: 'major'
+
+releaseNotesGenerator:
+  preset: conventionalcommits
+  presetConfig:
+    types:
+      - type: 'feat'
+        section: '✨ Features'
+      - type: 'fix'
+        section: '🐛 Bug Fixes'
+      - type: 'perf'
+        section: '⚡ Performance Improvements'
+      - type: 'refactor'
+        section: '♻️ Code Refactoring'
+      - type: 'docs'
+        section: '📚 Documentation'
+      - type: 'style'
+        section: '💄 Styles'
+      - type: 'test'
+        section: '🧪 Tests'
+      - type: 'build'
+        section: '📦 Build System'
+      - type: 'ci'
+        section: '👷 CI'
+      - type: 'chore'
+        section: '🔧 Chores'
+      - type: 'revert'
+        section: '⏪ Reverts'
+
+changelog:
+  preset: conventionalcommits
+  presetConfig:
+    types:
+      - type: 'feat'
+        section: '✨ Features'
+      - type: 'fix'
+        section: '🐛 Bug Fixes'
+      - type: 'perf'
+        section: '⚡ Performance Improvements'
+      - type: 'refactor'
+        section: '♻️ Code Refactoring'
+      - type: 'docs'
+        section: '📚 Documentation'
+      - type: 'style'
+        section: '💄 Styles'
+      - type: 'test'
+        section: '🧪 Tests'
+      - type: 'build'
+        section: '📦 Build System'
+      - type: 'ci'
+        section: '👷 CI'
+      - type: 'chore'
+        section: '🔧 Chores'
+      - type: 'revert'
+        section: '⏪ Reverts'
+
+git:
+  assets:
+    - 'CHANGELOG.md'
+    - 'package.json'
+    - 'package-lock.json'
+  message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}'
+
+github:
+  successComment: |
+    :tada: This ${issue.pull_request ? 'PR is included' : 'issue is fixed'} in version ${nextRelease.version} :tada:
+    
+    The release is available on:
+    - [GitHub release](https://github.com/wahyudedik/LaravelAlert/releases/tag/${nextRelease.gitTag})
+    - [Packagist](https://packagist.org/packages/wahyudedik/laravel-alert)
+    - [Documentation](https://wahyudedik.github.io/LaravelAlert)
+    
+    **Full Changelog**: https://github.com/wahyudedik/LaravelAlert/compare/${lastRelease.gitTag}...${nextRelease.gitTag}
+  releasedLabels:
+    - 'released on ${nextRelease.channel}'
+  addReleases: 'bottom'
