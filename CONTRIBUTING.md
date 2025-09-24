@@ -15,7 +15,7 @@ Thank you for your interest in contributing to Laravel Alert! This document prov
 
 1. **Fork the repository**
    ```bash
-   git clone https://github.com/your-username/LaravelAlert.git
+   git clone https://github.com/wahyudedik/LaravelAlert.git
    cd LaravelAlert
    ```
 
