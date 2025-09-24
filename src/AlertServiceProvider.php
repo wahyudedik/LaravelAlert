@@ -154,10 +154,33 @@ class AlertServiceProvider extends ServiceProvider
             'namespace' => 'Wahyudedik\LaravelAlert\Http\Controllers',
             'middleware' => ['web'],
         ], function () {
+            // Basic alert routes
             Route::get('alerts', 'AlertController@index')->name('laravel-alert.alerts');
             Route::post('alerts/dismiss', 'AlertController@dismiss')->name('laravel-alert.dismiss');
             Route::post('alerts/dismiss-all', 'AlertController@dismissAll')->name('laravel-alert.dismiss-all');
             Route::delete('alerts/clear', 'AlertController@clear')->name('laravel-alert.clear');
+
+            // AJAX alert routes
+            Route::group(['prefix' => 'ajax'], function () {
+                Route::get('alerts', 'AjaxAlertController@index')->name('laravel-alert.ajax.alerts');
+                Route::post('alerts', 'AjaxAlertController@store')->name('laravel-alert.ajax.store');
+                Route::post('alerts/dismiss', 'AjaxAlertController@dismiss')->name('laravel-alert.ajax.dismiss');
+                Route::post('alerts/dismiss-all', 'AjaxAlertController@dismissAll')->name('laravel-alert.ajax.dismiss-all');
+                Route::delete('alerts/clear', 'AjaxAlertController@clearByType')->name('laravel-alert.ajax.clear-by-type');
+                Route::get('alerts/by-type', 'AjaxAlertController@getByType')->name('laravel-alert.ajax.get-by-type');
+                Route::get('alerts/stats', 'AjaxAlertController@stats')->name('laravel-alert.ajax.stats');
+                Route::post('alerts/multiple', 'AjaxAlertController@createMultiple')->name('laravel-alert.ajax.create-multiple');
+            });
+
+            // WebSocket alert routes
+            Route::group(['prefix' => 'ws'], function () {
+                Route::post('connect', 'WebSocketAlertController@handleConnection')->name('laravel-alert.ws.connect');
+                Route::post('broadcast', 'WebSocketAlertController@broadcast')->name('laravel-alert.ws.broadcast');
+                Route::post('subscribe', 'WebSocketAlertController@subscribe')->name('laravel-alert.ws.subscribe');
+                Route::post('unsubscribe', 'WebSocketAlertController@unsubscribe')->name('laravel-alert.ws.unsubscribe');
+                Route::get('connections', 'WebSocketAlertController@getConnections')->name('laravel-alert.ws.connections');
+                Route::post('send', 'WebSocketAlertController@sendToConnection')->name('laravel-alert.ws.send');
+            });
         });
     }
 
