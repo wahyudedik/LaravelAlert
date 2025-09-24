@@ -75,7 +75,19 @@ class AlertManager implements AlertManagerInterface
      */
     public function getAlerts(): array
     {
-        return $this->session->get($this->getSessionKey(), []);
+        $alerts = $this->session->get($this->getSessionKey(), []);
+
+        // Filter out expired alerts
+        $validAlerts = array_filter($alerts, function ($alert) {
+            return $alert->isValid();
+        });
+
+        // Update session with valid alerts only
+        if (count($validAlerts) !== count($alerts)) {
+            $this->session->put($this->getSessionKey(), array_values($validAlerts));
+        }
+
+        return $validAlerts;
     }
 
     /**
@@ -234,5 +246,95 @@ class AlertManager implements AlertManagerInterface
         $alerts = $this->getAlerts();
         $this->clear();
         return $alerts;
+    }
+
+    /**
+     * Add alert with expiration time.
+     */
+    public function addWithExpiration(
+        string $type,
+        string $message,
+        ?string $title = null,
+        int $expiresInSeconds = 3600,
+        array $options = []
+    ): self {
+        $options['expires_at'] = time() + $expiresInSeconds;
+        return $this->add($type, $message, $title, $options);
+    }
+
+    /**
+     * Add alert with auto-dismiss.
+     */
+    public function addWithAutoDismiss(
+        string $type,
+        string $message,
+        ?string $title = null,
+        int $autoDismissDelay = 5000,
+        array $options = []
+    ): self {
+        $options['auto_dismiss_delay'] = $autoDismissDelay;
+        return $this->add($type, $message, $title, $options);
+    }
+
+    /**
+     * Add temporary alert (expires in specified seconds).
+     */
+    public function temporary(
+        string $type,
+        string $message,
+        ?string $title = null,
+        int $expiresInSeconds = 300,
+        array $options = []
+    ): self {
+        return $this->addWithExpiration($type, $message, $title, $expiresInSeconds, $options);
+    }
+
+    /**
+     * Add flash alert (auto-dismisses after delay).
+     */
+    public function flash(
+        string $type,
+        string $message,
+        ?string $title = null,
+        int $autoDismissDelay = 3000,
+        array $options = []
+    ): self {
+        return $this->addWithAutoDismiss($type, $message, $title, $autoDismissDelay, $options);
+    }
+
+    /**
+     * Clean up expired alerts.
+     */
+    public function cleanupExpired(): self
+    {
+        $alerts = $this->session->get($this->getSessionKey(), []);
+        $validAlerts = array_filter($alerts, function ($alert) {
+            return $alert->isValid();
+        });
+
+        $this->session->put($this->getSessionKey(), array_values($validAlerts));
+        return $this;
+    }
+
+    /**
+     * Get expired alerts.
+     */
+    public function getExpiredAlerts(): array
+    {
+        $alerts = $this->session->get($this->getSessionKey(), []);
+        return array_filter($alerts, function ($alert) {
+            return $alert->isExpired();
+        });
+    }
+
+    /**
+     * Get alerts that should auto-dismiss.
+     */
+    public function getAutoDismissAlerts(): array
+    {
+        $alerts = $this->getAlerts();
+        return array_filter($alerts, function ($alert) {
+            return $alert->shouldAutoDismiss();
+        });
     }
 }

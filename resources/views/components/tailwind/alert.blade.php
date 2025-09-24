@@ -1,11 +1,18 @@
 @props(['alert', 'config'])
 
 <div id="{{ $alert->getId() }}"
-    class="rounded-md p-4 mb-4 {{ $alert->getClass() }} {{ $alert->isDismissible() ? 'relative' : '' }}"
+    class="rounded-md p-4 mb-4 {{ $alert->getAllClasses() }} {{ $alert->isDismissible() ? 'relative' : '' }}"
     @if ($alert->getStyle()) style="{{ $alert->getStyle() }}" @endif role="alert"
     data-alert-type="{{ $alert->getType() }}" data-alert-id="{{ $alert->getId() }}"
-    @if ($config['auto_dismiss'] ?? false) data-auto-dismiss="true"
-        data-dismiss-delay="{{ $config['dismiss_delay'] ?? 5000 }}" @endif>
+    @if ($alert->shouldAutoDismiss()) data-auto-dismiss="true"
+        data-dismiss-delay="{{ $alert->getAutoDismissDelay() }}"
+    @elseif($config['auto_dismiss'] ?? false)
+        data-auto-dismiss="true"
+        data-dismiss-delay="{{ $config['dismiss_delay'] ?? 5000 }}" @endif
+    @if ($alert->getExpiresAt()) data-expires-at="{{ $alert->getExpiresAt() }}" @endif
+    @if ($alert->getAnimation()) data-animation="{{ $alert->getAnimation() }}" @endif
+    @if ($alert->getPosition()) data-position="{{ $alert->getPosition() }}" @endif
+    @if ($alert->getTheme()) data-theme="{{ $alert->getTheme() }}" @endif {!! $alert->getDataAttributesHtml() !!}>
     <div class="flex">
         <div class="flex-shrink-0">
             @if ($alert->getIcon())
@@ -52,7 +59,11 @@
                 </h3>
             @endif
             <div class="text-sm">
-                {{ $alert->getMessage() }}
+                @if ($alert->getHtmlContent())
+                    {!! $alert->getHtmlContent() !!}
+                @else
+                    {{ $alert->getMessage() }}
+                @endif
             </div>
         </div>
         @if ($alert->isDismissible())
@@ -77,19 +88,74 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const alert = document.getElementById('{{ $alert->getId() }}');
-            if (alert && alert.dataset.autoDismiss === 'true') {
-                const delay = parseInt(alert.dataset.dismissDelay) || {{ $config['dismiss_delay'] ?? 5000 }};
-                setTimeout(function() {
-                    if (alert && alert.parentNode) {
-                        alert.style.transition = 'opacity 0.3s ease';
-                        alert.style.opacity = '0';
-                        setTimeout(function() {
-                            if (alert && alert.parentNode) {
-                                alert.remove();
-                            }
-                        }, 300);
+            if (alert) {
+                // Handle auto-dismiss
+                if (alert.dataset.autoDismiss === 'true') {
+                    const delay = parseInt(alert.dataset.dismissDelay) || {{ $config['dismiss_delay'] ?? 5000 }};
+                    setTimeout(function() {
+                        if (alert && alert.parentNode) {
+                            alert.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                            alert.style.opacity = '0';
+                            alert.style.transform = 'translateX(100%)';
+                            setTimeout(function() {
+                                if (alert && alert.parentNode) {
+                                    alert.remove();
+                                }
+                            }, 300);
+                        }
+                    }, delay);
+                }
+
+                // Handle expiration
+                if (alert.dataset.expiresAt) {
+                    const expiresAt = parseInt(alert.dataset.expiresAt);
+                    const now = Math.floor(Date.now() / 1000);
+                    if (expiresAt <= now) {
+                        alert.remove();
+                        return;
                     }
-                }, delay);
+
+                    // Check expiration every minute
+                    setInterval(function() {
+                        const now = Math.floor(Date.now() / 1000);
+                        if (expiresAt <= now) {
+                            alert.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                            alert.style.opacity = '0';
+                            alert.style.transform = 'translateX(100%)';
+                            setTimeout(function() {
+                                if (alert && alert.parentNode) {
+                                    alert.remove();
+                                }
+                            }, 300);
+                        }
+                    }, 60000);
+                }
+
+                // Handle animations
+                if (alert.dataset.animation) {
+                    const animation = alert.dataset.animation;
+
+                    switch (animation) {
+                        case 'slide':
+                            alert.style.transform = 'translateX(100%)';
+                            alert.style.transition = 'transform 0.3s ease';
+                            setTimeout(() => {
+                                alert.style.transform = 'translateX(0)';
+                            }, 10);
+                            break;
+                        case 'bounce':
+                            alert.style.animation = 'bounce 0.6s ease';
+                            break;
+                        case 'fade':
+                        default:
+                            alert.style.opacity = '0';
+                            alert.style.transition = 'opacity 0.3s ease';
+                            setTimeout(() => {
+                                alert.style.opacity = '1';
+                            }, 10);
+                            break;
+                    }
+                }
             }
         });
     </script>

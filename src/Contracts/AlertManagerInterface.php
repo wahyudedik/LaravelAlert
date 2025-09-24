@@ -93,4 +93,39 @@ interface AlertManagerInterface
      * Flush alerts (clear and return them).
      */
     public function flush(): array;
+
+    /**
+     * Add alert with expiration time.
+     */
+    public function addWithExpiration(string $type, string $message, ?string $title = null, int $expiresInSeconds = 3600, array $options = []): self;
+
+    /**
+     * Add alert with auto-dismiss.
+     */
+    public function addWithAutoDismiss(string $type, string $message, ?string $title = null, int $autoDismissDelay = 5000, array $options = []): self;
+
+    /**
+     * Add temporary alert (expires in specified seconds).
+     */
+    public function temporary(string $type, string $message, ?string $title = null, int $expiresInSeconds = 300, array $options = []): self;
+
+    /**
+     * Add flash alert (auto-dismisses after delay).
+     */
+    public function flash(string $type, string $message, ?string $title = null, int $autoDismissDelay = 3000, array $options = []): self;
+
+    /**
+     * Clean up expired alerts.
+     */
+    public function cleanupExpired(): self;
+
+    /**
+     * Get expired alerts.
+     */
+    public function getExpiredAlerts(): array;
+
+    /**
+     * Get alerts that should auto-dismiss.
+     */
+    public function getAutoDismissAlerts(): array;
 }
