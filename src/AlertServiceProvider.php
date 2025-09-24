@@ -145,6 +145,8 @@ class AlertServiceProvider extends ServiceProvider
                 AlertInstallCommand::class,
                 AlertPublishCommand::class,
                 AlertClearCommand::class,
+                Commands\StatusCommand::class,
+                Commands\TestCommand::class,
             ]);
         }
     }

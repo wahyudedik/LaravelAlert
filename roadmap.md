@@ -136,16 +136,18 @@ Create a powerful, easy-to-use Laravel alert library that provides beautiful, cu
   - [x] Semantic versioning
   - [x] Automated releases via GitHub Actions
 
-- [ ] **Laravel Package Discovery**
-  - [ ] Auto-discovery configuration
-  - [ ] Service provider auto-registration
-  - [ ] Facade auto-registration
+- [x] **Laravel Package Discovery**
+  - [x] Auto-discovery configuration
+  - [x] Service provider auto-registration
+  - [x] Facade auto-registration
 
 ### 4.2 Developer Experience
-- [ ] **Artisan Commands**
-  - [ ] `php artisan alert:install` for setup
-  - [ ] `php artisan alert:publish` for customization
-  - [ ] `php artisan alert:clear` for cleanup
+- [x] **Artisan Commands**
+  - [x] `php artisan laravel-alert:install` for setup
+  - [x] `php artisan laravel-alert:publish` for customization
+  - [x] `php artisan laravel-alert:clear` for cleanup
+  - [x] `php artisan laravel-alert:status` for status check
+  - [x] `php artisan laravel-alert:test` for testing
 
 - [ ] **IDE Support**
   - [ ] PhpStorm/VS Code autocompletion
